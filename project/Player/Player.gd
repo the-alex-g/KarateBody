@@ -1,3 +1,4 @@
+class_name Player
 extends Node2D
 
 enum Side {LEFT, RIGHT}
@@ -8,7 +9,7 @@ onready var area := $HitArea
 
 export var punch_delay_time := 0.5
 
-var _error
+var _ignore
 var side = Side.LEFT
 var can_punch := true
 
