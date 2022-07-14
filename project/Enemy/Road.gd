@@ -2,22 +2,36 @@ extends Node2D
 
 const _Enemy := preload("res://Enemy/Enemy.tscn")
 
-export var _enemy_spawn_delay := 1
+onready var _enemy_spawn_timer = $EnemySpawnTimer as Timer
+onready var _enemy_container = $Enemies as Node2D
+onready var _enemy_spawn_point = $EnemySpawnPoint as Position2D
 
-func _ready():
+export var enemy_spawn_delay := 1
+
+func _ready()->void:
 	randomize()
-	$Timer.wait_time = _enemy_spawn_delay
+	_enemy_spawn_timer.wait_time = enemy_spawn_delay
 
-func _on_Timer_timeout():
+
+func _on_Timer_timeout()->void:
 	spawn_enemy()
 
-func spawn_enemy():
-	var _enemy := _Enemy.instance()
-	_enemy.position = Vector2.ZERO
+
+func spawn_enemy()->void:
+	var enemy := _Enemy.instance()
+	enemy.position = _enemy_spawn_point.position
 	var side := randi()%2
 	match side:
 		0:
-			_enemy.side = _enemy.Side.LEFT
+			enemy.side = enemy.Side.LEFT
 		1:
-			_enemy.side = _enemy.Side.RIGHT
-	$Enemies.add_child(_enemy)
+			enemy.side = enemy.Side.RIGHT
+	_enemy_container.add_child(enemy)
+	# warning-ignore:return_value_discarded
+	enemy.connect("game_over", self, "_on_Enemy_game_over", [], CONNECT_ONESHOT)
+	enemy.connect("dead", get_parent(), "_on_Enemy_dead", [], CONNECT_ONESHOT)
+
+
+func _on_Enemy_game_over()->void:
+	print("You losed!")
+	_enemy_spawn_timer.stop()
