@@ -70,30 +70,31 @@ func _punch()->void:
 func _check_for_combo()->Dictionary:
 	var modifiers := {"reload":0, "damage":0, "throwback":0, "combo_name":""}
 	if _a_combo == 1 and _b_combo == 1 and _y_combo == 1 and thunder_foot:
-		modifiers["combo_name"] = "thunder foot"
+		modifiers["combo_name"] = "TF"
 		modifiers["damage"] = 3
 		modifiers["throwback"] = 100
 	elif _y_combo == 1 and _b_combo == 1 and back_flip_neck_stomp:
-		modifiers["combo_name"] = "back flip neck stomp"
+		modifiers["combo_name"] = "BFNS"
 		modifiers["damage"] = 3
 		modifiers["reload"] = 1.8
 	elif _a_combo == 2 and double_jump_front_kick:
-		modifiers["combo_name"] = "double jump front kick"
+		modifiers["combo_name"] = "DJFK"
 		modifiers["damage"] = 2
 		modifiers["throwback"] = 50
 		modifiers["reload"] = 1.5
 	elif _a_combo == 1 and tiger_claw_bat_fist:
-		modifiers["combo_name"] = "tiger claw bat fist"
+		modifiers["combo_name"] = "TCBF"
 		modifiers["damage"] = 1
 		modifiers["throwback"] = 50
 		modifiers["reload"] = 1.5
 	elif _b_combo == 1 and power_hands:
-		modifiers["combo_name"] = "power hands"
+		modifiers["combo_name"] = "PH"
 		modifiers["damage"] = 1
 	return modifiers
 
 
 func _hit_check(damage_dealt:int, additional_throwback:int)->void:
+	_reset_combos()
 	for body in area.get_overlapping_bodies():
 		body.hit(damage_dealt, additional_throwback)
 
@@ -124,6 +125,10 @@ func _on_Main_unlock(level:int)->void:
 
 
 func _on_ComboResetTimer_timeout()->void:
+	_reset_combos()
+
+
+func _reset_combos()->void:
 	_a_combo = 0
 	_b_combo = 0
 	_y_combo = 0

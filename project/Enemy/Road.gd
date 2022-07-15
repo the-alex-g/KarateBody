@@ -29,6 +29,7 @@ func spawn_enemy()->void:
 	_enemy_container.add_child(enemy)
 	# warning-ignore:return_value_discarded
 	enemy.connect("game_over", self, "_on_Enemy_game_over", [], CONNECT_ONESHOT)
+# warning-ignore:return_value_discarded
 	enemy.connect("dead", get_parent(), "_on_Enemy_dead", [], CONNECT_ONESHOT)
 
 

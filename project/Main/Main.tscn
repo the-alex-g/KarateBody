@@ -1,8 +1,46 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Enemy/Road.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Main/Main.gd" type="Script" id=3]
+[ext_resource path="res://ComboNames/BFNS.png" type="Texture" id=4]
+[ext_resource path="res://ComboNames/TF.png" type="Texture" id=5]
+[ext_resource path="res://ComboNames/TCBF.png" type="Texture" id=6]
+[ext_resource path="res://ComboNames/DJFK.png" type="Texture" id=7]
+[ext_resource path="res://ComboNames/PH.png" type="Texture" id=8]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "BFNS",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 8 ) ],
+"loop": true,
+"name": "PH",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "DJFK",
+"speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "Nothing",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ) ],
+"loop": true,
+"name": "TCBF",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "TF",
+"speed": 5.0
+} ]
 
 [node name="Main" type="Node2D"]
 position = Vector2( -1, 0 )
@@ -13,5 +51,13 @@ position = Vector2( 300.455, 495.282 )
 
 [node name="Road" parent="." instance=ExtResource( 2 )]
 
+[node name="ComboName" type="AnimatedSprite" parent="."]
+position = Vector2( 300, 100 )
+frames = SubResource( 1 )
+animation = "Nothing"
+
+[node name="ComboTimer" type="Timer" parent="."]
+
 [connection signal="unlock" from="." to="Player" method="_on_Main_unlock"]
 [connection signal="combo" from="Player" to="." method="_on_Player_combo"]
+[connection signal="timeout" from="ComboTimer" to="." method="_on_ComboTimer_timeout"]
